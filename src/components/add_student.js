@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 class AddStudent extends Component {
     state = {
-        name: '',
-        course: '',
-        grade: ''
+        name: 'Heather',
+        course: 'Math 093',
+        grade: '97',
+        instructor: 'Dan',
+        notes: 'Heather is a great student!'
     }
 
     handleSubmit = (event) => {
@@ -19,7 +21,9 @@ class AddStudent extends Component {
         this.setState({
             name: '',
             course: '',
-            grade: ''
+            grade: '',
+            instructor: '',
+            notes: ''
         });
     }
 
@@ -30,7 +34,7 @@ class AddStudent extends Component {
     }
 
     render(){
-        const {name, course, grade} = this.state;
+        const {name, course, grade, instructor, notes} = this.state;
 
         return (
             <form onSubmit={this.handleSubmit}>
@@ -48,8 +52,21 @@ class AddStudent extends Component {
                 </div>
                 <div className="row">
                     <div className="col input-field s10 offset-s1">
-                        <input onChange={this.handleKeyPress} name="grade" type="text" id="grade" value={grade} autoComplete="off"/>
+                        <input onChange={this.handleKeyPress} name="grade" type="number" id="grade" value={grade} autoComplete="off"/>
                         <label htmlFor="grade">Grade</label>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col input-field s10 offset-s1">
+                        <input onChange={this.handleKeyPress} name="instructor" type="text" id="instructor" value={instructor} autoComplete="off"/>
+                        <label htmlFor="instructor">Instructor</label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col input-field s10 offset-s1">
+                        <input onChange={this.handleKeyPress} name="notes" type="text" id="notes" value={notes} autoComplete="off"/>
+                        <label htmlFor="notes">Notes</label>
                     </div>
                 </div>
 

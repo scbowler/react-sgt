@@ -2,10 +2,10 @@ import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import '../assets/css/app.scss';
 import React, { Component } from 'react';
+import axios from 'axios';
 import AddStudent from './add_student';
 import Table from './table';
-import studentData from '../data/get_all_students';
-import { randomString } from '../helpers';
+import { formatPostData } from '../helpers';
 
 class App extends Component {
     state = {
@@ -16,36 +16,29 @@ class App extends Component {
         this.getStudentData();
     }
 
-    deleteStudent = (id) => {
-        const indexToDelete = this.state.students.findIndex((student) => {
-            return student.id === id;
-        });
+    deleteStudent = async (id) => {
+        
+        const formattedId = formatPostData({id: id});
 
-        if(indexToDelete >= 0){
-            const tempStudents = this.state.students.slice();
+        await axios.post('/server/deletestudent.php', formattedId);
 
-            tempStudents.splice(indexToDelete, 1);
-
-            this.setState({
-                students: tempStudents
-            });
-        }
+        this.getStudentData();
     }
 
-    addStudent = (student) => {
+    addStudent = async (student) => {
 
-        student.id = randomString();
+        const formattedStudent = formatPostData(student);
 
-        this.setState({
-            students: [...this.state.students, student]
-        });
+        await axios.post('/server/createstudent.php', formattedStudent);
+
+        this.getStudentData();
     }
 
-    getStudentData(){
-        // Call server to get student data
+    async getStudentData(){
+        const resp = await axios.get('/server/getstudentlist.php');
 
         this.setState({
-            students: studentData
+            students: resp.data.data || []
         });
     }
 
